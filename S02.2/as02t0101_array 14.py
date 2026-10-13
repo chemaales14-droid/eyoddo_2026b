@@ -37,3 +37,10 @@ except:
     print("numero no encontrado")  
 
     #busqueda por indice TEMA NUEVO      
+#asignando valor en n indice    qe no existe 
+try:
+
+  my_array[100]=3
+except:
+   print("indice no existe") 
+   
