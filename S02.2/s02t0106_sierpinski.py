@@ -1,61 +1,83 @@
-from array import array as arr   #imprta la bilblioteca importa la herramienta de la biblioteca y la renombra
+from array import array as arr
+from enum import Enum
 
-rows=10
+# Borra pantalla con caracteres ANSI
+def clear_screen():
+    print("\033[2J\033[H", end="")
 
-columns=2*rows-1
-#funcion par a imprimir matriz
-def print_matriz(input_matriz):
+# Encapsulado de los valores ANSI
+# para colores en un enumerado
+class AnsiColor(Enum):
+    RED = "\033[91m"
+    YELLOW = "\033[93m"
+    CYAN = "\033[96m"
+    RESET = "\033[0m"
 
- for row in matriz:
-   print(list(row))
+# Funcion para imprimir matrix
+def print_matrix(input_matrix):
+    for row in input_matrix:
+        print(list(row))
 
-#crando grid2d
-matriz=[]
+# Funcion para generar triangulo
+def generate_triangle(rows=1):
+    # Paramestros de mi cuadricula
+    columns = 2 * rows - 1
+    # Creando el grid 2D
+    matrix = []
+    # Construyendo el grid
+    for _ in range(rows):
+        new_row = arr('i', [0] * columns)
+        matrix.append(new_row)
+    # Calculando el centro de la primera fila
+    center = columns // 2 # se hace divisione entera
 
-#construllendo el grid
-for _ in range(rows):
-    new_row=arr('i',[0]*columns)
-    matriz.append(new_row)#appen insertar datos
+    # Estableciendo el centro en 1
+    matrix[0][center] = 1
 
-#validando la construccion del grid
-print (f"cantidad de filas:{len(matriz)}")
-print (f"cantidad de columnas:{len(matriz[0])}")
+    # Se calcula el resto de la matrix
+    # Siguiendo la logica del siperpinsky Gasket
+    for row in range(1, rows):
+        for col in range(0, columns):
+            left_upper_cell = 0
+            right_upper_cell = 0
 
+            # Si la columna donde estamos
+            # es mayor a cero es decir esta un elemento
+            # despues del borde izquierdo
+            if col > 0:
+                left_upper_cell = matrix[row-1][col-1]
 
-#calculando el centro de la pirmera fila 
-center=columns//2  #sehace divsion entere
+            # Si la columna esta un elmento antes
+            # del borde derecho
+            if col < columns - 1:
+                right_upper_cell = matrix[row-1][col+1]
 
-# estableciendo el centro con 1
-matriz[0][center]=1
-# priemro es la filla(0)y lo otro es lomuna
-#print_matriz(matriz)
-#se calcula el resto de r matriz siguiendo la alogica del sierpinski 
+            # Asigno valor al arreglo
+            if left_upper_cell != right_upper_cell:
+                matrix[row][col] = 1
+            else:
+                matrix[row][col] = 0
+    # Regresando la matriz
+    return matrix
 
-print_matriz(matriz)
-for row in range (1,rows):
-    for col in range (0,columns):
-          left_upper_cell=0
-          right_upper_cell_upper_cell=0
+# Dibuja la matriz
+def draw_matrix(input_matrix, symbol="*"):
+    for row in input_matrix:
+        for cell in row:
+            if cell == 1:
+                print(AnsiColor.CYAN.value + symbol + AnsiColor.RESET.value, end="")
+            else:
+                print(AnsiColor.RED.value + " ", end="")
+        print()
 
+# Metodo principal
+def main():
+    # Genera el triangulo de Sierpinsky
+    matrix = generate_triangle(5)
+    # Limpia la pantalla antes de dibujar la matriz
+    clear_screen()
+    # Dibuja la matriz en pantalla
+    draw_matrix(matrix, symbol="■")
 
-       
-       # print(f"[{row}_{col}]",end="")
-   # print()
-#si la columna es mayor a donde estamos es mayor a cero 
-if col>0:
-   left_upper_cell = matriz[row-1][columns-1]
-
-   #si la columna esta un elemento antes de
-   # 
-   # 
-   # 
-   #  el borde derecho 
-   if col <columns-1:
-    right_upper_cell =  matriz[row-1][columns+1]
-   #guardad arreglo
-   if left_upper_cell !=  right_upper_cell :
-      matriz[row][col]=1
-   else:
-       matriz[row][col]=0
-print()
-print_matriz(matriz)
+if __name__ == "__main__":
+    main()
