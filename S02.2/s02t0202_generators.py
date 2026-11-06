@@ -1,5 +1,5 @@
 """
-Generators 
+Generators
 
 los generadores son funciones que pueden
 pausar su ejecucion.
@@ -7,22 +7,22 @@ pausar su ejecucion.
 cuando se invoca una funcion generadora
 devueve un objeto generador (aka Interador).
 
-El codigo dentro de una funcion no se ejecuta 
+El codigo dentro de una funcion no se ejecuta
 de inmediato, solo se copila.
 
-la funcion se ejecuta unicamente cuando 
+la funcion se ejecuta unicamente cuando
 iteras(repetir) sobre el generador.
 
 """
 #yield (producir)
 def my_generator():
     yield 1
-        yield 2
-            yield 3
-                yield 4
+    yield 2
+    yield 3
+    yield 4
 
                 #se invoca funcion generadora
-                my_iterator = my_generator()
+my_iterator = my_generator()
 
                 #se itera manualmente sobre el generador
                 # print(next(my_iterator)) #imprime 1
@@ -32,5 +32,5 @@ def my_generator():
                 # print(next(my_iterator)) #imprime ?
 
                 #los iteradores se puede iterar con un for
-                for value in my_iterator:
-                   print(value)
+for value in my_iterator:
+    print(value)
